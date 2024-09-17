@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include "algorithm.h"
 
 //Rotate right function for a 32-bit word
 uint32_t rotate_right(uint32_t value, uint32_t shift) {

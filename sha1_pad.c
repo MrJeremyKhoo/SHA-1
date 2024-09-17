@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include "algorithm.h"
 
 void sha1_pad(uint8_t *message, size_t length, uint8_t **padded_message, size_t * padded_length) {
   const size_t BLOCK_SIZE = 64; //SHA-1 block size in bytes (512 bits)
