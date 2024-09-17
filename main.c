@@ -28,6 +28,7 @@ void sha1_transform(SHA1Context *context, const uint8_t block[SHA1_BLOCK_SIZE]) 
   uint32_t a,b,c,d,e,temp;
   const uint32_t k[4] = {0x5A827999, 0x6ED9EBA1, 0x8F1BBCDC, 0xCA62C1D6};
 
+  //prepare message schedule {W_t} 
   for (int i = 0; i < 16; ++i) {
     w[i] = (block[i * 4] << 24) | (block[i * 4 + 1] << 16) | (block[i * 4 + 2] << 8) | (block[i * 4 + 3]);
   }
@@ -37,12 +38,15 @@ void sha1_transform(SHA1Context *context, const uint8_t block[SHA1_BLOCK_SIZE]) 
     uint32_t rotated_w = rotate_left(w[i],1);
   }
 
+//Initialize the five working variables a,b,c,d and e with the (i-1) hash value
+
+
 }
 
 int main () {
   SHA1Context sha1context;
   SHA1Context* sha1context_ptr = &sha1context;
   sha1_init(sha1context_ptr);
-  printf("h1 %08x\n", sha1context.h[0]);
+  printf("h1 %08x\n", sha1context.h[1]);
 
 }
