@@ -23,20 +23,18 @@ void sha1_init(SHA1Context * context) {
   context->count[1] = 0;
 }
 
+
 //Process a single 512-bit block
 void sha1_transform(SHA1Context *context, const uint8_t block[SHA1_BLOCK_SIZE]) {
   uint32_t w[80];
   uint32_t a,b,c,d,e,temp;
   const uint32_t k[4] = {0x5A827999, 0x6ED9EBA1, 0x8F1BBCDC, 0xCA62C1D6};
-
   //prepare message schedule {W_t} 
-  for (int i = 0; i < 16; ++i) {
-    w[i] = (block[i * 4] << 24) | (block[i * 4 + 1] << 16) | (block[i * 4 + 2] << 8) | (block[i * 4 + 3]);
-  }
-
+    for (int i = 0; i < 16; ++i) {
+        w[i] = (block[i * 4] << 24) | (block[i * 4 + 1] << 16) | (block[i * 4 + 2] << 8) | (block[i * 4 + 3]);
+    }
   for (int i = 16; i <80; ++i) {
-    w[i] = (w[i - 3] ^ w[i - 8] ^ w[i - 14] ^ w[i - 16]);
-    uint32_t rotated_w = rotate_left(w[i],1);
+    w[i] = rotate_left((w[i - 3] ^ w[i - 8] ^ w[i - 14] ^ w[i - 16]),1);
   }
 
   //Initialize the five working variables a,b,c,d and e with the (i-1) hash value
@@ -109,7 +107,7 @@ void sha1_update(SHA1Context *context, const uint8_t *data, size_t len) {
 int main () {
     SHA1Context sha1context;
     uint8_t digest[SHA1_DIGEST_SIZE];
-    uint8_t message[] = "hello";
+    uint8_t message[] = "The quick brown fox jumps over the lazy dog";
     size_t length = sizeof(message) - 1;
 
     size_t padded_length = 512;
@@ -117,26 +115,18 @@ int main () {
 
     sha1_init(&sha1context);
     sha1_pad(message, length, &padded_message, &padded_length);
-    sha1_update(&sha1context, padded_message, padded_length);
 
-    printf("SHA-1 computation successful.\n");
+    sha1_update(&sha1context, padded_message, padded_length);
 
     // Free dynamically allocated memory
     free(padded_message);
 	
-	for (int i = 0; i < 5; ++i) {
-    digest[i * 4] = (sha1context.h[i] >> 24) & 0xFF;
-    digest[i * 4 + 1] = (sha1context.h[i] >> 16) & 0xFF;
-    digest[i * 4 + 2] = (sha1context.h[i] >> 8) & 0xFF;
-    digest[i * 4 + 3] = sha1context.h[i] & 0xFF;
-}
+    printf("SHA-1 hash: ");
+    for (int i = 0; i < SHA1_DIGEST_SIZE; ++i) {
+        digest[i] = (sha1context.h[i >> 2] >> ((3 - (i & 3)) * 8)) & 0xFF;
+        printf("%02x", digest[i]);
+    }
 
-	// Now `digest` holds the final SHA-1 hash, and you can print it:
-	printf("SHA-1 hash: ");
-	for (int i = 0; i < SHA1_DIGEST_SIZE; ++i) {
-		printf("%02x", digest[i]);
-	}
-	printf("\n");
-
+    printf("\n");
     return 0;
 }

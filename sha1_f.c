@@ -5,7 +5,7 @@
 //Choose function: choose between y or z depending on the vlaue of x
 uint32_t Choose(uint32_t x, uint32_t y, uint32_t z) {
   // Compute the expression (x n y) + (~x n z)
-  return (x && y) ^ (!x && z);
+  return (x & y) | (~x & z);
 }
 
 //Parity function: determine pairity of bits between the inputs
@@ -16,7 +16,7 @@ uint32_t Parity(uint32_t x, uint32_t y, uint32_t z) {
 
 //Majority function: return majority aggregation of 1 bits between the 3 inputs.
 uint32_t Majority(uint32_t x, uint32_t y, uint32_t z) {
-  return (x && y) ^ (x && z) ^ (y && z);
+  return (x & y) | (x & z) | (y & z);
 }
 
 //SHA-1 function
