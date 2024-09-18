@@ -39,26 +39,3 @@ void sha1_pad(uint8_t *message, size_t length, uint8_t **padded_message, size_t 
   }
 
 }
-
-int main() {
-    // test
-    uint8_t message[] = "abc";
-    size_t length = sizeof(message) - 1; // Length of the message (excluding null terminator)
-
-    // Pad the message
-    uint8_t *padded_message = NULL;
-    size_t padded_length = 0;
-    sha1_pad(message, length, &padded_message, &padded_length);
-
-    // Print the padded message in hex
-    printf("Padded message (length: %zu bytes):\n", padded_length);
-    for (size_t i = 0; i < padded_length; ++i) {
-        printf("%02X ", padded_message[i]);
-    }
-    printf("\n");
-
-    // Free allocated memory
-    free(padded_message);
-
-    return 0;
-}
