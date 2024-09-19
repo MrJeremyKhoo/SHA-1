@@ -122,6 +122,7 @@ int main () {
     free(padded_message);
 	
     printf("SHA-1 hash: ");
+    //we must convert to big endian because sha-1 is defined to be big endian lol
     for (int i = 0; i < SHA1_DIGEST_SIZE; ++i) {
         digest[i] = (sha1context.h[i >> 2] >> ((3 - (i & 3)) * 8)) & 0xFF;
         printf("%02x", digest[i]);
